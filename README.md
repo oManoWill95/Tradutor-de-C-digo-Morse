@@ -1,124 +1,17 @@
-/**
-Tradutor de Código Morse
-Projeto 1- Laboratório de Algoritmos e Programação II
-Integrantes:
-Enzo Yuri Domingues Ma
-RA:10738664
-Victor Esteves Gallo Birello
-RA:10737139
-Willian Lima de Oliveira Pena
-RA:10428678
- */
+Tradutor de Código Morse em C
 
-#include <stdio.h>
-#include <string.h>
+Projeto desenvolvido durante o segundo semestre da graduação em Ciência da Computação utilizando a linguagem C. O sistema foi projetado para realizar a tradução entre texto alfanumérico e Código Morse, aplicando conceitos fundamentais de programação, como estruturas condicionais, laços de repetição, vetores, manipulação de strings e funções.
 
-// Tabela com o código morse
-const char* CODIGO_MORSE[26] = {
-    ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---",
-    "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-",
-    "..-", "...-", ".--", "-..-", "-.--", "--.."
-};
+O projeto teve como objetivo consolidar os conhecimentos adquiridos na disciplina de Algoritmos e Programação, com foco na lógica de programação, organização do código e tratamento de entradas e saídas de dados por meio do terminal.
 
-// Vetor com o alfabeto
-const char ALFABETO[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+Tecnologias utilizadas: C, GCC e Visual Studio Code.
 
-// Função traduzir (recebe código válido e imprime o correspondente)
-void traduzir(const char *codigo) {
-    for (int i = 0; i < 26; i++) {
-        if (strcmp(codigo, CODIGO_MORSE[i]) == 0) { // Compara o código com os itens da tabela
-            printf("%c", ALFABETO[i]); // Imprime a letra correspondente
-            return;
-        }
-    }
-}
+--------------------------------------------------------------------------------------------------------------------------------
 
-// Função traduzir_corrompido (pega os códigos que terminam com *)
-void traduzir_corrompido(const char *codigo) {
-    char prefixo[20];
-    int tam = strlen(codigo) - 1; // Calcula o tamanho sem considerar o *
+Morse Code Translator in C
 
-    strncpy(prefixo, codigo, tam); // Copia o código sem o *
-    prefixo[tam] = '\0';
+A project developed during the second semester of a Computer Science degree program using the C language. The system was designed to translate between alphanumeric text and Morse Code, applying fundamental programming concepts such as conditional statements, loops, arrays, string manipulation, and functions.
 
-    printf("[");
+The project aimed to consolidate knowledge gained in the Algorithms and Programming course, focusing on programming logic, code organization, and terminal-based input/output handling.
 
-    for (int i = 0; i < 26; i++) { // Percorre e procura códigos com esse começo
-        if (strncmp(prefixo, CODIGO_MORSE[i], strlen(prefixo)) == 0) {
-            printf("%c", ALFABETO[i]); // Imprime as letras possíveis
-        }
-    }
-
-    printf("]");
-}
-
-// Função processar (percorre caractere por caractere)
-void processar(char linha[], int pos, char codigo[], int *ind, int *espacos) {
-    char c = linha[pos]; // Pega o caractere atual
-
-    if (c == '\0' || c == '\n') { // Verifica se chegou ao final da linha
-        if (*ind > 0) {
-            codigo[*ind] = '\0'; // Finaliza a string do código atual
-
-            if (codigo[strlen(codigo) - 1] == '*') // Verifica se está corrompido
-                traduzir_corrompido(codigo);
-            else
-                traduzir(codigo);
-        }
-        return;
-    }
-
-    if (c == ' ') {
-        (*espacos)++; // Se for espaço, incrementa o contador
-
-        if (*ind > 0) {
-            codigo[*ind] = '\0';
-
-            if (codigo[strlen(codigo) - 1] == '*')
-                traduzir_corrompido(codigo);
-            else
-                traduzir(codigo);
-
-            *ind = 0; // Reseta para começar uma nova letra
-        }
-
-        if (*espacos == 2) { // Separação de palavras
-            printf(" ");
-        }
-    }
-    else {
-        *espacos = 0; // Zera o contador de espaços
-
-        codigo[*ind] = c; // Adiciona ao código da letra atual
-        (*ind)++; // Avança o índice
-    }
-
-    processar(linha, pos + 1, codigo, ind, espacos); // Chama a função para o próximo caractere
-}
-
-// Função main (lê a entrada em loop)
-int main() {
-    char linha[200]; // Vetor da linha digitada
-
-    while (1) {
-        char codigo[20] = ""; // Vetor do código morse de uma letra
-        int ind = 0; // Índice da letra atual
-        int espacos = 0; // Contador de espaços
-
-        printf("Digite o código Morse:\n");
-
-        if (fgets(linha, sizeof(linha), stdin) == NULL) {
-            break;
-        }
-
-        // Encerra se digitar 'a' sozinho
-        if (linha[0] == 'a' && linha[1] == '\n') {
-            break;
-        }
-
-        processar(linha, 0, codigo, &ind, &espacos); // Chama a função
-        printf("\n");
-    }
-
-    return 0;
-}
+Technologies used: C, GCC, and Visual Studio Code.
